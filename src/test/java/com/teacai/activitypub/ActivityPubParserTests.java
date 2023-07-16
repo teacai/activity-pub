@@ -235,6 +235,21 @@ class ActivityPubParserTests {
 	}
 
 	@Test
+	void parseEx058() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"summary\": \"Mention of Joe by Carrie in her note\",\n" +
+				"  \"type\": \"Mention\",\n" +
+				"  \"href\": \"http://example.org/joe\",\n" +
+				"  \"name\": \"Joe\"\n" +
+				"}");
+		//TODO: Summary in a Mention/Link?
+		assertEquals(ObjectType.Mention, object.getType());
+		assertEquals("Joe", object.getName());
+		assertEquals("http://example.org/joe", ((Link) object).getHref());
+	}
+
+	@Test
 	void parseEx060() throws JsonProcessingException {
 		ActivityStreamsObject object = parser.parse("{\n" +
 				"  \"type\": \"OrderedCollection\",\n" +

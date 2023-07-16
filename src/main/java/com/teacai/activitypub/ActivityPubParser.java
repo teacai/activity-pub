@@ -67,6 +67,7 @@ public class ActivityPubParser {
             case Tombstone:
                 return createTombstone(map);
             case Link:
+            case Mention:
                 return createLink(map);
             case Activity:
             case Invite:
