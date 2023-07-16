@@ -2,7 +2,7 @@ package com.teacai.activitypub.model;
 
 public class ActivityStreamsFields {
     public static final String CONTEXT_ACTIVITY_STREAMS = "https://www.w3.org/ns/activitystreams";
-    public static final String CONTEXT = "@context";
+    public static final String AT_CONTEXT = "@context";
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String TYPE = "type";
@@ -21,6 +21,7 @@ public class ActivityStreamsFields {
     public static final String RESULT = "result";
     public static final String SUMMARY = "summary";
     public static final String TARGET = "target";
+    public static final String CONTEXT = "context";
 
     public static final String FORMER_TYPE = "formerType";
     public static final String DELETED = "deleted";

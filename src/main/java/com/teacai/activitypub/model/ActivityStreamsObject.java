@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityStreamsObject {
 
-    @JsonProperty(ActivityStreamsFields.CONTEXT)
-    private String context;
+    @JsonProperty(ActivityStreamsFields.AT_CONTEXT)
+    private String atContext;
 
     private String id;
 
@@ -19,12 +19,12 @@ public class ActivityStreamsObject {
     private ObjectType type;
 
 
-    public String getContext() {
-        return context;
+    public String getAtContext() {
+        return atContext;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setAtContext(String atContext) {
+        this.atContext = atContext;
     }
 
     public String getId() {

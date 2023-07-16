@@ -1,6 +1,6 @@
 package com.teacai.activitypub.model;
 
-public class CollectionPage extends ActivityStreamsCollection {
+public class CollectionPage extends BaseCollection {
 
     private String partOf;
     private ActivityStreamsObject next;

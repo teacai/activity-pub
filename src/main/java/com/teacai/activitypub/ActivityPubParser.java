@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teacai.activitypub.model.Activity;
-import com.teacai.activitypub.model.ActivityStreamsCollection;
 import com.teacai.activitypub.model.ActivityStreamsFields;
 import com.teacai.activitypub.model.ActivityStreamsObject;
+import com.teacai.activitypub.model.BaseCollection;
 import com.teacai.activitypub.model.BaseObject;
 import com.teacai.activitypub.model.CollectionPage;
 import com.teacai.activitypub.model.Link;
@@ -71,6 +71,7 @@ public class ActivityPubParser {
                 return createLink(map);
             case Activity:
             case Invite:
+            case Like:
             case Offer:
             case Travel:
                 return createActivity(map);
@@ -88,7 +89,7 @@ public class ActivityPubParser {
     }
 
     protected static List<ActivityStreamsObject> createActivityStreamList(Object object) throws JsonParseException {
-        if (object instanceof Map) {
+        if (object instanceof Map || object instanceof String) {
             return Collections.singletonList(createActivityStreamObject(object));
         } else if (object instanceof Collection) {
             List<ActivityStreamsObject> parsedItems = new ArrayList<>();
@@ -108,7 +109,7 @@ public class ActivityPubParser {
         return Collections.emptyList();
     }
 
-    private static ActivityStreamsObject createTombstone(Map<String, Object> map) {
+    private static ActivityStreamsObject createTombstone(Map<String, Object> map) throws JsonParseException {
         Tombstone object = new Tombstone();
         object.setFormerType(ObjectType.parse(strValue(map.get(ActivityStreamsFields.FORMER_TYPE))));
         object.setDeleted(instantValue(map.get(ActivityStreamsFields.DELETED)));
@@ -116,7 +117,7 @@ public class ActivityPubParser {
         return addBaseObjectFields(object, map);
     }
 
-    private static ActivityStreamsObject createPlace(Map<String, Object> map) {
+    private static ActivityStreamsObject createPlace(Map<String, Object> map) throws JsonParseException {
         Place object = new Place();
         object.setUnits(strValue(map.get(ActivityStreamsFields.UNITS)));
         object.setAccuracy(doubleValue(map.get(ActivityStreamsFields.ACCURACY)));
@@ -129,7 +130,7 @@ public class ActivityPubParser {
 
     protected static ActivityStreamsObject createActivityStreamObject(String url) {
         Link link = new Link();
-        link.setContext(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS);
+        link.setAtContext(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS);
         link.setHref(url);
         link.setType(ObjectType.Link);
         return link;
@@ -182,8 +183,8 @@ public class ActivityPubParser {
         collection.setItems(createActivityStreamList(map.get(ActivityStreamsFields.ITEMS)));
     }
 
-    protected static ActivityStreamsCollection createCollection(Map<String, Object> map) throws JsonParseException {
-        return addCollectionFields(new ActivityStreamsCollection(), map);
+    protected static BaseCollection createCollection(Map<String, Object> map) throws JsonParseException {
+        return addCollectionFields(new BaseCollection(), map);
     }
 
     protected static OrderedCollection createOrderedCollection(Map<String, Object> map) throws JsonParseException {
@@ -193,7 +194,7 @@ public class ActivityPubParser {
         return collection;
     }
 
-    protected static <T extends ActivityStreamsCollection> T addCollectionFields(
+    protected static <T extends BaseCollection> T addCollectionFields(
             T activityStreamCollection, Map<String, Object> map) throws JsonParseException {
 
         activityStreamCollection.setTotalItems(intValue(map.get(ActivityStreamsFields.TOTAL_ITEMS)));
@@ -206,13 +207,15 @@ public class ActivityPubParser {
         return addBaseObjectFields(activityStreamCollection, map);
     }
 
-    protected static <T extends BaseObject> T addBaseObjectFields(T object, Map<String, Object> map) {
+    protected static <T extends BaseObject> T addBaseObjectFields(T object, Map<String, Object> map) throws JsonParseException {
         object.setSummary(strValue(map.get(ActivityStreamsFields.SUMMARY)));
+        object.setContext(createActivityStreamObject(map.get(ActivityStreamsFields.CONTEXT)));
+        object.setActor(createActivityStreamObject(map.get(ActivityStreamsFields.ACTOR)));
         return addActivityStreamsFields(object, map);
     }
 
     protected static <T extends ActivityStreamsObject> T addActivityStreamsFields(T object, Map<String, Object> map) {
-        object.setContext(strValue(map.get(ActivityStreamsFields.CONTEXT), ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS));
+        object.setAtContext(strValue(map.get(ActivityStreamsFields.AT_CONTEXT), ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS));
         object.setId(strValue(map.get(ActivityStreamsFields.ID)));
         object.setName(strValue(map.get(ActivityStreamsFields.NAME)));
         object.setType(ObjectType.parse(strValue(map.get(ActivityStreamsFields.TYPE))));

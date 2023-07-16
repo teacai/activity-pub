@@ -3,7 +3,7 @@ package com.teacai.activitypub;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teacai.activitypub.model.Activity;
-import com.teacai.activitypub.model.ActivityStreamsCollection;
+import com.teacai.activitypub.model.BaseCollection;
 import com.teacai.activitypub.model.ActivityStreamsFields;
 import com.teacai.activitypub.model.ActivityStreamsObject;
 import com.teacai.activitypub.model.BaseObject;
@@ -38,7 +38,7 @@ class ActivityPubParserTests {
 		assertEquals("http://www.test.example/object/1", object.getId());
 		assertEquals("A Simple, non-specific object", object.getName());
 		assertEquals(ObjectType.Object, object.getType());
-		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getContext());
+		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getAtContext());
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class ActivityPubParserTests {
 		assertNull(object.getId());
 		assertEquals("An example link", object.getName());
 		assertEquals(ObjectType.Link, object.getType());
-		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getContext());
+		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getAtContext());
 	}
 
 	@Test
@@ -77,7 +77,7 @@ class ActivityPubParserTests {
 
 		assertEquals(ObjectType.Activity, object.getType());
 		assertEquals("Sally did something to a note", ((Activity) object).getSummary());
-		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getContext());
+		assertEquals(ActivityStreamsFields.CONTEXT_ACTIVITY_STREAMS, object.getAtContext());
 		assertEquals("Sally", ((Activity) object).getActors().get(0).getName());
 	}
 
@@ -124,11 +124,11 @@ class ActivityPubParserTests {
 				"  ]\n" +
 				"}");
 		assertEquals(ObjectType.Collection, object.getType());
-		assertEquals(2, ((ActivityStreamsCollection) object).getTotalItems());
-		assertEquals("A Simple Note", ((ActivityStreamsCollection) object).getItems().get(0).getName());
-		assertEquals(ObjectType.Note, ((ActivityStreamsCollection) object).getItems().get(0).getType());
-		assertEquals("Another Simple Note", ((ActivityStreamsCollection) object).getItems().get(1).getName());
-		assertEquals(ObjectType.Note, ((ActivityStreamsCollection) object).getItems().get(1).getType());
+		assertEquals(2, ((BaseCollection) object).getTotalItems());
+		assertEquals("A Simple Note", ((BaseCollection) object).getItems().get(0).getName());
+		assertEquals(ObjectType.Note, ((BaseCollection) object).getItems().get(0).getType());
+		assertEquals("Another Simple Note", ((BaseCollection) object).getItems().get(1).getName());
+		assertEquals(ObjectType.Note, ((BaseCollection) object).getItems().get(1).getType());
 	}
 
 	@Test
@@ -150,7 +150,7 @@ class ActivityPubParserTests {
 				"  ]\n" +
 				"}");
 		assertEquals(ObjectType.OrderedCollection, object.getType());
-		assertEquals(2, ((ActivityStreamsCollection) object).getTotalItems());
+		assertEquals(2, ((BaseCollection) object).getTotalItems());
 		assertEquals("A Simple Note", ((OrderedCollection) object).getOrderedItems().get(0).getName());
 		assertEquals(ObjectType.Note, ((OrderedCollection) object).getOrderedItems().get(0).getType());
 		assertEquals("Another Simple Note", ((OrderedCollection) object).getOrderedItems().get(1).getName());
@@ -305,6 +305,41 @@ class ActivityPubParserTests {
 		assertEquals("Sally", ((Activity) object).getActors().get(1).getName());
 		assertEquals("http://sally.example.org", ((Activity) object).getActors().get(1).getId());
 		assertEquals(ObjectType.Person, ((Activity) object).getActors().get(1).getType());
+	}
+
+	@Test
+	void parseEx073() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"summary\": \"Activities in context 1\",\n" +
+				"  \"type\": \"Collection\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"type\": \"Offer\",\n" +
+				"      \"actor\": \"http://sally.example.org\",\n" +
+				"      \"object\": \"http://example.org/posts/1\",\n" +
+				"      \"target\": \"http://john.example.org\",\n" +
+				"      \"context\": \"http://example.org/contexts/1\"\n" +
+				"    },\n" +
+				"    {\n" +
+				"      \"type\": \"Like\",\n" +
+				"      \"actor\": \"http://joe.example.org\",\n" +
+				"      \"object\": \"http://example.org/posts/2\",\n" +
+				"      \"context\": \"http://example.org/contexts/1\"\n" +
+				"    }\n" +
+				"  ]\n" +
+				"}");
+
+		assertEquals(ObjectType.Collection, object.getType());
+		assertEquals(ObjectType.Link, ((BaseObject) ((BaseCollection) object).getItems().get(0)).getContext().getType());
+		assertEquals(ObjectType.Link, ((BaseObject) ((BaseCollection) object).getItems().get(1)).getContext().getType());
+		assertEquals("http://example.org/contexts/1", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getContext()).getHref());
+		assertEquals("http://example.org/contexts/1", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getContext()).getHref());
+		assertEquals("http://sally.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getActor()).getHref());
+		assertEquals("http://joe.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getActor()).getHref());
+		assertEquals("http://joe.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getActors().get(0)).getHref());
+		assertEquals("http://john.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getTarget()).getHref());
+
 	}
 
 	@Test

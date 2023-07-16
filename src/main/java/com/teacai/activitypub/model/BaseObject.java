@@ -1,58 +1,70 @@
 package com.teacai.activitypub.model;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * ActivityPub <b>Object</b> object.
  */
 public class BaseObject extends ActivityStreamsObject {
 
-    private String attachment;
-    private String attributedTo;
-    private String audience;
+    private ActivityStreamsObject actor;
+    private ActivityStreamsObject attachment;
+    private ActivityStreamsObject attributedTo;
+    private ActivityStreamsObject audience;
+
     private String content;
+    private ActivityStreamsObject context;
     private Instant endTime;
-    private String generator;
-    private String icon;
-    private String image;
-    private String inReplyTo;
-    private String location;
-    private String preview;
+    private ActivityStreamsObject generator;
+    private List<ActivityStreamsObject> icon;
+    private List<ActivityStreamsObject> image;
+    private List<ActivityStreamsObject> inReplyTo;
+    private ActivityStreamsObject location;
+    private ActivityStreamsObject preview;
     private Instant published;
-    private String replies;
+    private BaseCollection replies;
     private Instant startTime;
     private String summary;
-    private String tag;
+    private ActivityStreamsObject tag;
     private String updated;
-    private ActivityStreamsObject url;
-    private String to;
-    private String bto;
-    private String cc;
-    private String bcc;
+    private List<ActivityStreamsObject> url;
+    private ActivityStreamsObject to;
+    private ActivityStreamsObject bto;
+    private ActivityStreamsObject cc;
+    private ActivityStreamsObject bcc;
     private String mediaType;
     private String duration;
 
-    public String getAttachment() {
+    public ActivityStreamsObject getActor() {
+        return actor;
+    }
+
+    public void setActor(ActivityStreamsObject actor) {
+        this.actor = actor;
+    }
+
+    public ActivityStreamsObject getAttachment() {
         return attachment;
     }
 
-    public void setAttachment(String attachment) {
+    public void setAttachment(ActivityStreamsObject attachment) {
         this.attachment = attachment;
     }
 
-    public String getAttributedTo() {
+    public ActivityStreamsObject getAttributedTo() {
         return attributedTo;
     }
 
-    public void setAttributedTo(String attributedTo) {
+    public void setAttributedTo(ActivityStreamsObject attributedTo) {
         this.attributedTo = attributedTo;
     }
 
-    public String getAudience() {
+    public ActivityStreamsObject getAudience() {
         return audience;
     }
 
-    public void setAudience(String audience) {
+    public void setAudience(ActivityStreamsObject audience) {
         this.audience = audience;
     }
 
@@ -64,6 +76,14 @@ public class BaseObject extends ActivityStreamsObject {
         this.content = content;
     }
 
+    public ActivityStreamsObject getContext() {
+        return context;
+    }
+
+    public void setContext(ActivityStreamsObject context) {
+        this.context = context;
+    }
+
     public Instant getEndTime() {
         return endTime;
     }
@@ -72,51 +92,51 @@ public class BaseObject extends ActivityStreamsObject {
         this.endTime = endTime;
     }
 
-    public String getGenerator() {
+    public ActivityStreamsObject getGenerator() {
         return generator;
     }
 
-    public void setGenerator(String generator) {
+    public void setGenerator(ActivityStreamsObject generator) {
         this.generator = generator;
     }
 
-    public String getIcon() {
+    public List<ActivityStreamsObject> getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(List<ActivityStreamsObject> icon) {
         this.icon = icon;
     }
 
-    public String getImage() {
+    public List<ActivityStreamsObject> getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(List<ActivityStreamsObject> image) {
         this.image = image;
     }
 
-    public String getInReplyTo() {
+    public List<ActivityStreamsObject> getInReplyTo() {
         return inReplyTo;
     }
 
-    public void setInReplyTo(String inReplyTo) {
+    public void setInReplyTo(List<ActivityStreamsObject> inReplyTo) {
         this.inReplyTo = inReplyTo;
     }
 
-    public String getLocation() {
+    public ActivityStreamsObject getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(ActivityStreamsObject location) {
         this.location = location;
     }
 
-    public String getPreview() {
+    public ActivityStreamsObject getPreview() {
         return preview;
     }
 
-    public void setPreview(String preview) {
+    public void setPreview(ActivityStreamsObject preview) {
         this.preview = preview;
     }
 
@@ -128,11 +148,11 @@ public class BaseObject extends ActivityStreamsObject {
         this.published = published;
     }
 
-    public String getReplies() {
+    public BaseCollection getReplies() {
         return replies;
     }
 
-    public void setReplies(String replies) {
+    public void setReplies(BaseCollection replies) {
         this.replies = replies;
     }
 
@@ -152,11 +172,11 @@ public class BaseObject extends ActivityStreamsObject {
         this.summary = summary;
     }
 
-    public String getTag() {
+    public ActivityStreamsObject getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(ActivityStreamsObject tag) {
         this.tag = tag;
     }
 
@@ -168,43 +188,43 @@ public class BaseObject extends ActivityStreamsObject {
         this.updated = updated;
     }
 
-    public ActivityStreamsObject getUrl() {
+    public List<ActivityStreamsObject> getUrl() {
         return url;
     }
 
-    public void setUrl(ActivityStreamsObject url) {
+    public void setUrl(List<ActivityStreamsObject> url) {
         this.url = url;
     }
 
-    public String getTo() {
+    public ActivityStreamsObject getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(ActivityStreamsObject to) {
         this.to = to;
     }
 
-    public String getBto() {
+    public ActivityStreamsObject getBto() {
         return bto;
     }
 
-    public void setBto(String bto) {
+    public void setBto(ActivityStreamsObject bto) {
         this.bto = bto;
     }
 
-    public String getCc() {
+    public ActivityStreamsObject getCc() {
         return cc;
     }
 
-    public void setCc(String cc) {
+    public void setCc(ActivityStreamsObject cc) {
         this.cc = cc;
     }
 
-    public String getBcc() {
+    public ActivityStreamsObject getBcc() {
         return bcc;
     }
 
-    public void setBcc(String bcc) {
+    public void setBcc(ActivityStreamsObject bcc) {
         this.bcc = bcc;
     }
 

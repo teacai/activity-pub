@@ -2,7 +2,7 @@ package com.teacai.activitypub.model;
 
 import java.util.List;
 
-public class ActivityStreamsCollection extends BaseObject {
+public class BaseCollection extends BaseObject {
 
     private Integer totalItems;
     private String current;
