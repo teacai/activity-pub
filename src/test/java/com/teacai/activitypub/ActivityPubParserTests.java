@@ -12,6 +12,7 @@ import com.teacai.activitypub.model.Link;
 import com.teacai.activitypub.model.ObjectType;
 import com.teacai.activitypub.model.OrderedCollection;
 import com.teacai.activitypub.model.OrderedCollectionPage;
+import com.teacai.activitypub.model.Place;
 import com.teacai.activitypub.model.Tombstone;
 import org.junit.jupiter.api.Test;
 
@@ -214,6 +215,26 @@ class ActivityPubParserTests {
 	}
 
 	@Test
+	void parseEx057() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Place\",\n" +
+				"  \"name\": \"Fresno Area\",\n" +
+				"  \"latitude\": 36.75,\n" +
+				"  \"longitude\": 119.7667,\n" +
+				"  \"radius\": 15,\n" +
+				"  \"units\": \"miles\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Place, object.getType());
+		assertEquals("Fresno Area", object.getName());
+		assertEquals(36.75, ((Place) object).getLatitude());
+		assertEquals(119.7667, ((Place) object).getLongitude());
+		assertEquals(15, ((Place) object).getRadius());
+		assertEquals("miles", ((Place) object).getUnits());
+	}
+
+	@Test
 	void parseEx060() throws JsonProcessingException {
 		ActivityStreamsObject object = parser.parse("{\n" +
 				"  \"type\": \"OrderedCollection\",\n" +
@@ -342,6 +363,44 @@ class ActivityPubParserTests {
 		assertEquals(ObjectType.Link, ((CollectionPage) object).getPrev().getType());
 		assertEquals("http://example.org/collection?page=1", ((Link) ((CollectionPage) object).getPrev()).getHref());
 		assertEquals("Previous Page", ((CollectionPage) object).getPrev().getName());
+	}
+
+	@Test
+	void parseEx112() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"name\": \"Liu Gu Lu Cun, Pingdu, Qingdao, Shandong, China\",\n" +
+				"  \"type\": \"Place\",\n" +
+				"  \"latitude\": 36.75,\n" +
+				"  \"longitude\": 119.7667,\n" +
+				"  \"accuracy\": 94.5\n" +
+				"}");
+
+		assertEquals(ObjectType.Place, object.getType());
+		assertEquals("Liu Gu Lu Cun, Pingdu, Qingdao, Shandong, China", object.getName());
+		assertEquals(94.5, ((Place) object).getAccuracy());
+		assertEquals(36.75, ((Place) object).getLatitude());
+		assertEquals(119.7667, ((Place) object).getLongitude());
+	}
+
+	@Test
+	void parseEx113() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Place\",\n" +
+				"  \"name\": \"Fresno Area\",\n" +
+				"  \"altitude\": 15.0,\n" +
+				"  \"latitude\": 36.75,\n" +
+				"  \"longitude\": 119.7667,\n" +
+				"  \"units\": \"miles\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Place, object.getType());
+		assertEquals("Fresno Area", object.getName());
+		assertEquals(15.0, ((Place) object).getAltitude());
+		assertEquals(36.75, ((Place) object).getLatitude());
+		assertEquals(119.7667, ((Place) object).getLongitude());
+		assertEquals("miles", ((Place) object).getUnits());
 	}
 
 	@Test

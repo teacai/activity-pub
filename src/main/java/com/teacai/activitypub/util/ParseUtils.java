@@ -19,4 +19,8 @@ public class ParseUtils {
     public static Instant instantValue(Object obj) {
         return obj == null ? null : Instant.parse(obj.toString());
     }
+
+    public static Double doubleValue(Object obj) {
+        return obj == null ? null : Double.parseDouble(obj.toString());
+    }
 }

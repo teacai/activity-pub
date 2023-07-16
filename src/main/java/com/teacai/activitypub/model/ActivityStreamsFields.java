@@ -36,4 +36,11 @@ public class ActivityStreamsFields {
     public static final String NEXT = "next";
     public static final String START_INDEX = "startIndex";
 
+    public static final String UNITS = "units";
+    public static final String ACCURACY = "accuracy";
+    public static final String ALTITUDE = "altitude";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String RADIUS = "radius";
+
 }

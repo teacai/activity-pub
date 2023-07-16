@@ -14,6 +14,7 @@ import com.teacai.activitypub.model.Link;
 import com.teacai.activitypub.model.ObjectType;
 import com.teacai.activitypub.model.OrderedCollection;
 import com.teacai.activitypub.model.OrderedCollectionPage;
+import com.teacai.activitypub.model.Place;
 import com.teacai.activitypub.model.Tombstone;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.teacai.activitypub.util.ParseUtils.doubleValue;
 import static com.teacai.activitypub.util.ParseUtils.instantValue;
 import static com.teacai.activitypub.util.ParseUtils.intValue;
 import static com.teacai.activitypub.util.ParseUtils.strValue;
@@ -60,6 +62,8 @@ public class ActivityPubParser {
                 .orElseThrow(() -> new JsonParseException("Object type missing."));
 
         switch (type) {
+            case Place:
+                return createPlace(map);
             case Tombstone:
                 return createTombstone(map);
             case Link:
@@ -108,6 +112,17 @@ public class ActivityPubParser {
         object.setFormerType(ObjectType.parse(strValue(map.get(ActivityStreamsFields.FORMER_TYPE))));
         object.setDeleted(instantValue(map.get(ActivityStreamsFields.DELETED)));
 
+        return addBaseObjectFields(object, map);
+    }
+
+    private static ActivityStreamsObject createPlace(Map<String, Object> map) {
+        Place object = new Place();
+        object.setUnits(strValue(map.get(ActivityStreamsFields.UNITS)));
+        object.setAccuracy(doubleValue(map.get(ActivityStreamsFields.ACCURACY)));
+        object.setAltitude(doubleValue(map.get(ActivityStreamsFields.ALTITUDE)));
+        object.setLatitude(doubleValue(map.get(ActivityStreamsFields.LATITUDE)));
+        object.setLongitude(doubleValue(map.get(ActivityStreamsFields.LONGITUDE)));
+        object.setRadius(doubleValue(map.get(ActivityStreamsFields.RADIUS)));
         return addBaseObjectFields(object, map);
     }
 
