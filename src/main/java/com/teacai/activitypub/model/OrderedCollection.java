@@ -2,7 +2,7 @@ package com.teacai.activitypub.model;
 
 import java.util.List;
 
-public class OrderedCollection extends ActivityStreamCollection {
+public class OrderedCollection extends ActivityStreamsCollection {
 
     private List<ActivityStreamsObject> orderedItems;
 

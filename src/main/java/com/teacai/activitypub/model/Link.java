@@ -9,7 +9,7 @@ public class Link extends ActivityStreamsObject {
 
     private String href;
 
-    @JsonProperty("hreflang")
+    @JsonProperty(ActivityStreamsFields.HREF_LANG)
     private String hrefLang;
 
     private String rel;

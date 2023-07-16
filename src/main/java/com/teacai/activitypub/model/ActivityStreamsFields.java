@@ -15,8 +15,12 @@ public class ActivityStreamsFields {
     public static final String PREVIEW = "preview";
 
     public static final String ACTOR = "actor";
-
+    public static final String INSTRUMENT = "instrument";
+    public static final String OBJECT = "object";
+    public static final String ORIGIN = "origin";
+    public static final String RESULT = "result";
     public static final String SUMMARY = "summary";
+    public static final String TARGET = "target";
 
     public static final String FORMER_TYPE = "formerType";
     public static final String DELETED = "deleted";
@@ -27,5 +31,9 @@ public class ActivityStreamsFields {
     public static final String LAST = "last";
     public static final String ITEMS = "items";
     public static final String ORDERED_ITEMS = "orderedItems";
+    public static final String PART_OF = "partOf";
+    public static final String PREV = "prev";
+    public static final String NEXT = "next";
+    public static final String START_INDEX = "startIndex";
 
 }

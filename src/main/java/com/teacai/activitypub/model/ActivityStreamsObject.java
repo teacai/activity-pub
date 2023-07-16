@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityStreamsObject {
 
-    @JsonProperty("@context")
+    @JsonProperty(ActivityStreamsFields.CONTEXT)
     private String context;
 
     private String id;

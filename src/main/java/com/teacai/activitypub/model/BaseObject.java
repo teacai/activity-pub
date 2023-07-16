@@ -24,7 +24,7 @@ public class BaseObject extends ActivityStreamsObject {
     private String summary;
     private String tag;
     private String updated;
-    private String url;
+    private ActivityStreamsObject url;
     private String to;
     private String bto;
     private String cc;
@@ -168,11 +168,11 @@ public class BaseObject extends ActivityStreamsObject {
         this.updated = updated;
     }
 
-    public String getUrl() {
+    public ActivityStreamsObject getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(ActivityStreamsObject url) {
         this.url = url;
     }
 
