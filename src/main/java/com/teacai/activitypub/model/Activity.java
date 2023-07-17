@@ -9,7 +9,8 @@ public class Activity extends BaseObject {
     @JsonProperty(ActivityStreamsFields.OBJECT)
     private List<ActivityStreamsObject> objects;
 
-    private ActivityStreamsObject target;
+    @JsonProperty(ActivityStreamsFields.TARGET)
+    private List<ActivityStreamsObject> targets;
 
     private ActivityStreamsObject result;
 
@@ -25,12 +26,12 @@ public class Activity extends BaseObject {
         this.objects = objects;
     }
 
-    public ActivityStreamsObject getTarget() {
-        return target;
+    public List<ActivityStreamsObject> getTargets() {
+        return targets;
     }
 
-    public void setTarget(ActivityStreamsObject target) {
-        this.target = target;
+    public void setTargets(List<ActivityStreamsObject> targets) {
+        this.targets = targets;
     }
 
     public ActivityStreamsObject getResult() {

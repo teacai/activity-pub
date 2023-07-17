@@ -15,6 +15,7 @@ import com.teacai.activitypub.model.ObjectType;
 import com.teacai.activitypub.model.OrderedCollection;
 import com.teacai.activitypub.model.OrderedCollectionPage;
 import com.teacai.activitypub.model.Place;
+import com.teacai.activitypub.model.Question;
 import com.teacai.activitypub.model.Tombstone;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class ActivityPubParser {
         ObjectType type = Optional.ofNullable(map.get("type"))
                 .map(Object::toString)
                 .map(ObjectType::parse)
-                .orElseThrow(() -> new JsonParseException("Object type missing: " + map.get("type")));
+                .orElse(ObjectType.Custom);
 
         switch (type) {
             case Place:
@@ -71,11 +72,35 @@ public class ActivityPubParser {
                 return createLink(map);
             case Accept:
             case Activity:
+            case Add:
+            case Announce:
+            case Arrive:
+            case Block:
+            case Create:
+            case Delete:
+            case Dislike:
+            case Flag:
+            case Follow:
+            case Ignore:
             case Invite:
+            case Join:
+            case Leave:
             case Like:
+            case Listen:
+            case Move:
             case Offer:
+            case Reject:
+            case Read:
+            case Remove:
+            case TentativeAccept:
+            case TentativeReject:
             case Travel:
+            case Undo:
+            case Update:
+            case View:
                 return createActivity(map);
+            case Question:
+                return createQuestionActivity(map);
             case Collection:
                 return createCollection(map);
             case OrderedCollection:
@@ -148,17 +173,33 @@ public class ActivityPubParser {
         return addActivityStreamsFields(object, map);
     }
 
+
+    protected static ActivityStreamsObject createQuestionActivity(Map<String, Object> map) throws JsonParseException {
+        Question object = new Question();
+        addActivityFields(map, object);
+
+        object.setOneOf(createActivityStreamList(map.get(ActivityStreamsFields.ONE_OF)));
+        object.setAnyOf(createActivityStreamList(map.get(ActivityStreamsFields.ANY_OF)));
+        object.setClosed(instantValue(map.get(ActivityStreamsFields.CLOSED)));
+
+        return addBaseObjectFields(object, map);
+    }
+
     protected static Activity createActivity(Map<String, Object> map) throws JsonParseException {
         Activity object = new Activity();
 
+        addActivityFields(map, object);
+
+        return addBaseObjectFields(object, map);
+    }
+
+    protected static void addActivityFields(Map<String, Object> map, Activity object) throws JsonParseException {
         object.setSummary(strValue(map.get(ActivityStreamsFields.SUMMARY)));
         object.setObjects(createActivityStreamList(map.get(ActivityStreamsFields.OBJECT)));
-        object.setTarget(createActivityStreamObject(map.get(ActivityStreamsFields.TARGET)));
+        object.setTargets(createActivityStreamList(map.get(ActivityStreamsFields.TARGET)));
         object.setResult(createActivityStreamObject(map.get(ActivityStreamsFields.RESULT)));
         object.setOrigin(createActivityStreamObject(map.get(ActivityStreamsFields.ORIGIN)));
         object.setInstrument(createActivityStreamObject(map.get(ActivityStreamsFields.INSTRUMENT)));
-
-        return addBaseObjectFields(object, map);
     }
 
     private static ActivityStreamsObject createCollectionPage(Map<String, Object> map) throws JsonParseException {
@@ -210,6 +251,9 @@ public class ActivityPubParser {
         object.setSummary(strValue(map.get(ActivityStreamsFields.SUMMARY)));
         object.setContext(createActivityStreamObject(map.get(ActivityStreamsFields.CONTEXT)));
         object.setActors(createActivityStreamList(map.get(ActivityStreamsFields.ACTOR)));
+        object.setUrl(createActivityStreamList(map.get(ActivityStreamsFields.URL)));
+        object.setLocation(createActivityStreamObject(map.get(ActivityStreamsFields.LOCATION)));
+        object.setContent(strValue(map.get(ActivityStreamsFields.CONTENT)));
         return addActivityStreamsFields(object, map);
     }
 
@@ -218,6 +262,9 @@ public class ActivityPubParser {
         object.setId(strValue(map.get(ActivityStreamsFields.ID)));
         object.setName(strValue(map.get(ActivityStreamsFields.NAME)));
         object.setType(ObjectType.parse(strValue(map.get(ActivityStreamsFields.TYPE))));
+        if (object.getType() == ObjectType.Custom) {
+            object.setCustomType(strValue(map.get(ActivityStreamsFields.TYPE)));
+        }
         return object;
     }
 }

@@ -1,7 +1,7 @@
 package com.teacai.activitypub.model;
 
 public enum ObjectType {
-    Application, Group, Organization, Person, Service,
+    Application, Group, Organization, Person, Service, Custom,
 
     Activity, Article, Audio, Collection, CollectionPage, Document, Event,
     Image, Link, Mention, Note, Object, OrderedCollection, OrderedCollectionPage,
@@ -20,6 +20,6 @@ public enum ObjectType {
                 }
             }
         }
-        return null;
+        return Custom;
     }
 }

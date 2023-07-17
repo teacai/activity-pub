@@ -22,6 +22,9 @@ public class ActivityStreamsFields {
     public static final String SUMMARY = "summary";
     public static final String TARGET = "target";
     public static final String CONTEXT = "context";
+    public static final String URL = "url";
+    public static final String LOCATION = "location";
+    public static final String CONTENT = "content";
 
     public static final String FORMER_TYPE = "formerType";
     public static final String DELETED = "deleted";
@@ -43,5 +46,9 @@ public class ActivityStreamsFields {
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String RADIUS = "radius";
+
+    public static final String ONE_OF = "oneOf";
+    public static final String ANY_OF = "anyOf";
+    public static final String CLOSED = "closed";
 
 }

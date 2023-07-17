@@ -18,6 +18,7 @@ public class ActivityStreamsObject {
 
     private ObjectType type;
 
+    private String customType;
 
     public String getAtContext() {
         return atContext;
@@ -51,4 +52,11 @@ public class ActivityStreamsObject {
         this.type = objectType;
     }
 
+    public String getCustomType() {
+        return customType;
+    }
+
+    public void setCustomType(String customType) {
+        this.customType = customType;
+    }
 }
