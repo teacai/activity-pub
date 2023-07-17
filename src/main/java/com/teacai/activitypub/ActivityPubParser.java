@@ -59,7 +59,7 @@ public class ActivityPubParser {
         ObjectType type = Optional.ofNullable(map.get("type"))
                 .map(Object::toString)
                 .map(ObjectType::parse)
-                .orElseThrow(() -> new JsonParseException("Object type missing."));
+                .orElseThrow(() -> new JsonParseException("Object type missing: " + map.get("type")));
 
         switch (type) {
             case Place:
@@ -69,6 +69,7 @@ public class ActivityPubParser {
             case Link:
             case Mention:
                 return createLink(map);
+            case Accept:
             case Activity:
             case Invite:
             case Like:
@@ -157,8 +158,6 @@ public class ActivityPubParser {
         object.setOrigin(createActivityStreamObject(map.get(ActivityStreamsFields.ORIGIN)));
         object.setInstrument(createActivityStreamObject(map.get(ActivityStreamsFields.INSTRUMENT)));
 
-        object.setActors(createActivityStreamList(map.get(ActivityStreamsFields.ACTOR)));
-
         return addBaseObjectFields(object, map);
     }
 
@@ -210,7 +209,7 @@ public class ActivityPubParser {
     protected static <T extends BaseObject> T addBaseObjectFields(T object, Map<String, Object> map) throws JsonParseException {
         object.setSummary(strValue(map.get(ActivityStreamsFields.SUMMARY)));
         object.setContext(createActivityStreamObject(map.get(ActivityStreamsFields.CONTEXT)));
-        object.setActor(createActivityStreamObject(map.get(ActivityStreamsFields.ACTOR)));
+        object.setActors(createActivityStreamList(map.get(ActivityStreamsFields.ACTOR)));
         return addActivityStreamsFields(object, map);
     }
 

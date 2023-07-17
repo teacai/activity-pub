@@ -6,9 +6,6 @@ import java.util.List;
 
 public class Activity extends BaseObject {
 
-    @JsonProperty(ActivityStreamsFields.ACTOR)
-    private List<ActivityStreamsObject> actors;
-
     @JsonProperty(ActivityStreamsFields.OBJECT)
     private List<ActivityStreamsObject> objects;
 
@@ -19,14 +16,6 @@ public class Activity extends BaseObject {
     private ActivityStreamsObject origin;
 
     private ActivityStreamsObject instrument;
-
-    public List<ActivityStreamsObject> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<ActivityStreamsObject> actors) {
-        this.actors = actors;
-    }
 
     public List<ActivityStreamsObject> getObjects() {
         return objects;

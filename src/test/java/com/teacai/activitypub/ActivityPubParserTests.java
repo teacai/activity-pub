@@ -215,6 +215,117 @@ class ActivityPubParserTests {
 	}
 
 	@Test
+	void parseEx009() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"summary\": \"Sally accepted an invitation to a party\",\n" +
+				"  \"type\": \"Accept\",\n" +
+				"  \"actor\": {\n" +
+				"    \"type\": \"Person\",\n" +
+				"    \"name\": \"Sally\"\n" +
+				"  },\n" +
+				"  \"object\": {\n" +
+				"    \"type\": \"Invite\",\n" +
+				"    \"actor\": \"http://john.example.org\",\n" +
+				"    \"object\": {\n" +
+				"      \"type\": \"Event\",\n" +
+				"      \"name\": \"Going-Away Party for Jim\"\n" +
+				"    }\n" +
+				"  }\n" +
+				"}");
+		assertEquals(ObjectType.Accept, object.getType());
+		assertEquals("Sally accepted an invitation to a party", ((Activity) object).getSummary());
+		assertEquals("Sally", ((Activity) object).getActors().get(0).getName());
+		assertEquals("Going-Away Party for Jim", ((Activity) ((Activity) object).getObjects().get(0)).getObjects().get(0).getName());
+	}
+
+	@Test
+	void parseEx010() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"    \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"    \"summary\": \"Sally accepted Joe into the club\",\n" +
+				"    \"type\": \"Accept\",\n" +
+				"    \"actor\": {\n" +
+				"      \"type\": \"Person\",\n" +
+				"      \"name\": \"Sally\"\n" +
+				"    },\n" +
+				"    \"object\": {\n" +
+				"      \"type\": \"Person\",\n" +
+				"      \"name\": \"Joe\"\n" +
+				"    },\n" +
+				"    \"target\": {\n" +
+				"      \"type\": \"Group\",\n" +
+				"      \"name\": \"The Club\"\n" +
+				"    }\n" +
+				"  }");
+		assertEquals(ObjectType.Accept, object.getType());
+		assertEquals("Sally accepted Joe into the club", ((Activity) object).getSummary());
+		assertEquals("Sally", ((Activity) object).getActors().get(0).getName());
+		assertEquals("Joe", ((Activity) object).getObjects().get(0).getName());
+		assertEquals("The Club", ((Activity) object).getTarget().getName());
+	}
+
+	@Test
+	void parseEx042() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Application\",\n" +
+				"  \"name\": \"Exampletron 3000\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Application, object.getType());
+		assertEquals("Exampletron 3000", object.getName());
+	}
+
+	@Test
+	void parseEx043() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Group\",\n" +
+				"  \"name\": \"Big Beards of Austin\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Group, object.getType());
+		assertEquals("Big Beards of Austin", object.getName());
+	}
+
+	@Test
+	void parseEx044() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Organization\",\n" +
+				"  \"name\": \"Example Co.\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Organization, object.getType());
+		assertEquals("Example Co.", object.getName());
+	}
+
+	@Test
+	void parseEx045() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Person\",\n" +
+				"  \"name\": \"Sally Smith\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Person, object.getType());
+		assertEquals("Sally Smith", object.getName());
+	}
+
+	@Test
+	void parseEx046() throws JsonProcessingException {
+		ActivityStreamsObject object = parser.parse("{\n" +
+				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
+				"  \"type\": \"Service\",\n" +
+				"  \"name\": \"Acme Web Service\"\n" +
+				"}");
+
+		assertEquals(ObjectType.Service, object.getType());
+		assertEquals("Acme Web Service", object.getName());
+	}
+
+	@Test
 	void parseEx057() throws JsonProcessingException {
 		ActivityStreamsObject object = parser.parse("{\n" +
 				"  \"@context\": \"https://www.w3.org/ns/activitystreams\",\n" +
@@ -335,8 +446,7 @@ class ActivityPubParserTests {
 		assertEquals(ObjectType.Link, ((BaseObject) ((BaseCollection) object).getItems().get(1)).getContext().getType());
 		assertEquals("http://example.org/contexts/1", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getContext()).getHref());
 		assertEquals("http://example.org/contexts/1", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getContext()).getHref());
-		assertEquals("http://sally.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getActor()).getHref());
-		assertEquals("http://joe.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getActor()).getHref());
+		assertEquals("http://sally.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getActors().get(0)).getHref());
 		assertEquals("http://joe.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(1)).getActors().get(0)).getHref());
 		assertEquals("http://john.example.org", ((Link) ((Activity) ((BaseCollection) object).getItems().get(0)).getTarget()).getHref());
 

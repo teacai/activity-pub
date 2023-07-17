@@ -1,5 +1,7 @@
 package com.teacai.activitypub.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -7,8 +9,8 @@ import java.util.List;
  * ActivityPub <b>Object</b> object.
  */
 public class BaseObject extends ActivityStreamsObject {
-
-    private ActivityStreamsObject actor;
+    @JsonProperty(ActivityStreamsFields.ACTOR)
+    private List<ActivityStreamsObject> actors;
     private ActivityStreamsObject attachment;
     private ActivityStreamsObject attributedTo;
     private ActivityStreamsObject audience;
@@ -36,12 +38,12 @@ public class BaseObject extends ActivityStreamsObject {
     private String mediaType;
     private String duration;
 
-    public ActivityStreamsObject getActor() {
-        return actor;
+    public List<ActivityStreamsObject> getActors() {
+        return actors;
     }
 
-    public void setActor(ActivityStreamsObject actor) {
-        this.actor = actor;
+    public void setActors(List<ActivityStreamsObject> actors) {
+        this.actors = actors;
     }
 
     public ActivityStreamsObject getAttachment() {

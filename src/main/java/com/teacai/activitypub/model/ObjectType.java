@@ -1,9 +1,11 @@
 package com.teacai.activitypub.model;
 
 public enum ObjectType {
+    Application, Group, Organization, Person, Service,
+
     Activity, Article, Audio, Collection, CollectionPage, Document, Event,
     Image, Link, Mention, Note, Object, OrderedCollection, OrderedCollectionPage,
-    Page, Person, Place, Profile, Relationship, Tombstone, Video,
+    Page, Place, Profile, Relationship, Tombstone, Video,
 
     Accept, Add, Announce, Arrive, Block, Create, Delete, Dislike, Flag,
     Follow, Ignore, Invite, Join, Leave, Like, Listen, Move, Offer, Question,
